@@ -1,0 +1,5 @@
+[alias]
+# cargo lint  -> clippy on everything, warnings are errors
+lint = "clippy --all-targets -- -D warnings"
+# cargo cov   -> HTML coverage report in target/coverage/html (needs cargo-llvm-cov)
+cov = "llvm-cov --html --output-dir target/coverage"

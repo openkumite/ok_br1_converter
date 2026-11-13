@@ -1,0 +1,13 @@
+#!/bin/sh
+# Installed into .git/hooks by cargo-husky (runs on `cargo test`).
+set -e
+echo "pre-push: cargo audit"
+cargo audit --quiet
+echo "pre-push: cargo deny check"
+cargo deny check --hide-inclusion-graph
+echo "pre-push: coverage gate (50% lines, all features; set BR1_DISC for the disc tests)"
+# Homebrew's rustc has no rustup llvm-tools; use Homebrew LLVM when present.
+if [ -x /opt/homebrew/opt/llvm/bin/llvm-cov ]; then
+    export LLVM_COV=/opt/homebrew/opt/llvm/bin/llvm-cov LLVM_PROFDATA=/opt/homebrew/opt/llvm/bin/llvm-profdata
+fi
+cargo llvm-cov --quiet --summary-only --all-features --fail-under-lines 50

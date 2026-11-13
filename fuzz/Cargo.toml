@@ -1,0 +1,65 @@
+[package]
+name = "ok_br1_converter-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+ok_br1_converter = { path = ".." }
+
+# Not part of the parent crate's build.
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "decompress"
+path = "fuzz_targets/decompress.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "unpack"
+path = "fuzz_targets/unpack.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "tim"
+path = "fuzz_targets/tim.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "tmd"
+path = "fuzz_targets/tmd.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "vab"
+path = "fuzz_targets/vab.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "anm"
+path = "fuzz_targets/anm.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "vram"
+path = "fuzz_targets/vram.rs"
+test = false
+doc = false
+bench = false

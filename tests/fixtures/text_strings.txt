@@ -1,0 +1,26 @@
+# The table text.strings of the USA disc, entry by entry: key and the text's length in bytes; after each group of
+# entries `crc` and the CRC-32 of the group's texts, each with its NUL (the groups: the list `names`, then the list
+# `stages` with the single texts, as there is one). The text itself is not kept here, and no CRC covers a single short
+# text, which could be found from it. tests/runtime.rs checks the converted table against it.
+names.0 4
+names.1 4
+names.2 4
+names.3 7
+names.4 5
+names.5 3
+names.6 4
+names.7 7
+names.8 5
+crc f15f3bba
+stages.0 9
+stages.1 7
+stages.2 13
+stages.3 9
+stages.4 13
+stages.5 13
+stages.6 13
+stages.7 6
+stages.8 11
+stages.9 9
+final_stage 11
+crc 13888b0c

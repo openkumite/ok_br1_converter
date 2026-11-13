@@ -1,0 +1,27 @@
+# cargo-deny configuration: `cargo deny check` (also run by the pre-push hook).
+
+[graph]
+all-features = true
+
+[advisories]
+# Security advisories from the RustSec database fail the check; yanked crates too.
+yanked = "deny"
+ignore = []
+
+[licenses]
+# Permissive licenses used by the dependency tree.
+allow = ["MIT", "Apache-2.0", "Zlib", "Unicode-3.0", "0BSD", "Unlicense"]
+confidence-threshold = 0.93
+
+[licenses.private]
+# ok_br1_converter itself is unpublished (publish = false).
+ignore = true
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

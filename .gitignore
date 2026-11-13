@@ -1,0 +1,8 @@
+/target
+/out
+/fuzz/corpus
+/fuzz/artifacts
+/fuzz/target
+/fuzz/coverage
+/fuzz/artifacts-*.log
+.DS_Store
