@@ -201,7 +201,10 @@ impl Anm {
                 p.rot[b] = rot_y(-k.single[b - 17]); // base rotation not applied
             }
         }
-        p.trans[1] = [0, 1, 2].map(|j| f.offsets[1][j] + k.t1[j] * anim.t1_scale / 16.0);
+        // bone 1 carries the root translation; a form of a single bone has none
+        if f.offsets.len() > 1 {
+            p.trans[1] = [0, 1, 2].map(|j| f.offsets[1][j] + k.t1[j] * anim.t1_scale / 16.0);
+        }
         if f.parents.len() > 4 {
             p.trans[4] = k.t4.map(|v| v / 16.0);
         }
@@ -350,6 +353,30 @@ mod tests {
     fn quarter_turns() {
         let v = apply(&rot_z(1024.0), [1.0, 0.0, 0.0]);
         assert!(v[0].abs() < 1e-9 && (v[1] - 1.0).abs() < 1e-9);
+    }
+
+    /// A fuzzer input (made-up bytes) whose first form has a single bone: posing it must not index the root bone.
+    #[test]
+    fn pose_of_a_single_bone_form() {
+        let hex = concat!(
+            "00000000000100000a00000000000000020000000a0000000100000046000000000000003f000000ffffffff02e401111111",
+            "11111111040100000111110001ff00010000000000007c46000000000023003f000000000000000000000000000000000200",
+            "00000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "6969696969aeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeae32ffff0000fe11115c000000000000001111",
+            "11111111111111151515cececececececececececececececececece15151515151515151515151515151515151515151515",
+            "1515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515",
+            "1515151515151515111111110000696969691111",
+        );
+        let data: Vec<u8> =
+            (0..hex.len()).step_by(2).map(|i| u8::from_str_radix(&hex[i..i + 2], 16).unwrap()).collect();
+        let anm = Anm::parse(&data).expect("the input parses");
+        assert!(anm.forms.iter().any(|f| f.parents.len() == 1));
+        for form in 0..anm.forms.len() {
+            for a in anm.anims.iter().take(8) {
+                let p = anm.pose(form, a, 0.0);
+                let _ = world(&anm.forms[form].parents, &p);
+            }
+        }
     }
 
     #[test]
