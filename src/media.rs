@@ -163,6 +163,10 @@ pub fn video(disc: &mut Disc, out: &Path, f: &crate::disc::DiscFile) -> Result<V
         "192k",
         "-movflags",
         "+faststart",
+        "-max_interleave_delta",
+        "0",
+        "-fflags",
+        "+bitexact",
         out.join(&rel).to_str().unwrap(),
     ])?;
     // Poster: most representative frame shortly after 30% (openings fade from black).
